@@ -1,0 +1,30 @@
+body{
+    background-color: rebeccapurple;
+}
+.bodyclass{
+   
+}
+h2{
+    text-align: center;
+    color: aliceblue;
+    font-weight: bolder;
+}
+.input-fields{
+    border: none;
+    border-bottom: 1px solid white;
+    width: 30%;
+    color:green;
+    margin: 30px auto;
+    
+
+}
+input::placeholder{
+    color: red;
+    font-weight: bold;
+}
+.data-div{
+        
+}
+.labels{
+    text-align: center;
+}

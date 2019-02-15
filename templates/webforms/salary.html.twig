@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+{% block title %} Set Salary {% endblock %}
+ {% block stylesheets %} 
+ {{parent() }} 
+ <link rel="stylesheet" href="stylesheets/firstpagecss.css" >
+ {% endblock %}
+{% block body %}
+<div class="col-lg-12 bodyclass" >
+    <div class="col-lg-12 welcome-text" >
+        <h2> 
+            Welcome to Agile Media Lab pvt Ltd.
+        </h2>
+    </div>
+
+    <div class="col-lg-12 data-div">
+        <input type="name" id="name" class="form-control input-fields" oninput="nameVal(this)" placeholder="Enter Employee Name">
+        <input type="text" class="form-control input-fields" id="salary"   oninput="calculate()" placeholder="Enter Salalry">
+        <label id="PF" class="form-control input-fields labels">---NA---</label>
+        <label id="Inhand" class="form-control input-fields labels">---NA---</label>
+        <button id="submit">Submit</button>
+    </div>
+</div>
+{% endblock %}
+ {% block javascripts %}
+    {{ parent() }}
+    <script src="javascripts/firstpagescript.js"></script>   
+    {% endblock %}

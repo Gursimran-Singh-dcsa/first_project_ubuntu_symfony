@@ -1,9 +1,46 @@
 var error=false;
 $(document).ready(function(){
     var error=false;
+    $("#loading").hide();
     $("#submit").click(validator);
+    $(document).on("click",".no",noclick);
+    $(document).on("click",".outer",noclick);
+    $(document).on("click",".inner",innerclick);
+    $(document).on('click','.yes',yesclick);
+    $(document).ajaxStart(function () {
+        console.log("ajax start function");
+        $("#loading").show();
+    }).ajaxStop(function () {
+        console.log("ajax stop function");
+        $("#loading").hide();
+    });
+
     
 });
+function yesclick(){
+    $(".outer").remove();
+    $.ajax({
+        url:"/trypanga",
+        dataType:'json',
+        method:"POST",
+        data:{
+            Name:$("#name").val(),
+            salary:parseInt($("#salary").val())
+        },  
+        success:function(data){
+        
+          alert(data.Name);
+        },
+       });
+}
+function innerclick(e){
+    
+    e.stopPropagation();
+    console.log("fmdfmd");
+}
+function noclick(){
+      $(".outer").remove();
+}
 function validator()
 {
     
@@ -16,9 +53,9 @@ function validator()
     }
     else
     {
-        alert("are you sure you want to submit?");
+        askSubmit();
     }
-
+    
 }
 
 function calculate(e){
@@ -42,9 +79,26 @@ function calculate(e){
         $("#salary").css("border","none");
         $("#salary").css("border-bottom","1px solid white");
         let pf=(salary*12)/100;
-        $("#PF").html("PF:"+pf);
         let inhand=salary-pf;
-        $("#Inhand").html("Inhand:"+inhand);
+        diff=pf-parseInt(pf);
+        if(diff>.5)
+        {
+            modifiedpf=parseInt(pf)+1;
+            
+        }
+        else{
+            modifiedpf=parseInt(pf);
+        }
+       let  modifiedinhand=salary-modifiedpf;
+        if(pf==modifiedpf)
+        {
+            $("#PF").html("PF:"+pf);
+            $("#Inhand").html("Inhand:"+inhand);
+        }
+            else{
+            $("#PF").html("PF:"+pf+" ~ "+ modifiedpf);
+            $("#Inhand").html("Inhand:"+inhand+" ~ "+modifiedinhand);
+        }
     }
 
 }
@@ -70,9 +124,13 @@ function nameVal(e)
     {
         $("#name").css("color","green");
         $("#name").css("border","none");
+
         $("#name").css("border-bottom","1px solid white");
-        
     }
 
 }
- 
+ function askSubmit()
+{
+    $("body").append("<div class='outer'><div class='inner'>Do you want to Submit?<br><span class='yes'>yes</span>\
+    <span class='no'>No</span></div></div>");
+}

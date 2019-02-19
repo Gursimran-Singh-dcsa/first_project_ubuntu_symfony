@@ -1,5 +1,5 @@
 body{
-    background-color: rebeccapurple;
+    background-color: #663399;
 }
 .bodyclass{
    
@@ -27,4 +27,39 @@ input::placeholder{
 }
 .labels{
     text-align: center;
+}
+.outer,.outter{
+    	position: fixed; /* Stay in place */
+	  	z-index: 1; /* Sit on top */
+	 	padding-top: 100px; /* Location of the box */
+	  	left: 0;
+	  	top: 0;
+	  	width: 100%; /* Full width */
+	  	height: 100%; /* Full height */
+	  	overflow: auto; /* Enable scroll if needed */
+	  	background-color: rgb(0,0,0); /* Fallback color */
+	  	background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+.inner,.innner{
+    background-color: #fefefe;
+ 	 	margin: auto;
+ 		padding: 20px;
+  		border: 1px solid #888;
+		width: 30%
+}
+.innner{
+    border:none;
+    background-color: transparent;
+    border-radius: 25%;
+}
+.yes{
+    float:left;
+    margin-left: 80%;
+    color: red;
+    cursor: pointer;
+}
+.no{
+    margin-left: 20px;
+    color: green;
+    cursor: pointer;
 }

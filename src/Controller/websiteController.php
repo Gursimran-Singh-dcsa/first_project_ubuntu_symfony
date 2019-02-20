@@ -11,6 +11,7 @@ use App\Entity\Salarytable;
 use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Component\Serializer\Encoder\JsonDecode;
 use Symfony\Component\HttpFoundation\Request;
+use Doctrine\ORM\Mapping\Entity;
 
 
 class websiteController extends AbstractController{
@@ -101,73 +102,65 @@ class websiteController extends AbstractController{
             case 'maxsal':
             {
                 $RAW_QUERY = 'SELECT max(salary) FROM salarytable';
-                $statement = $em->getConnection()->prepare($RAW_QUERY);
-                $statement->execute();
-                $result = $statement->fetchAll(); 
+                $result=$this->preparedquery($RAW_QUERY,$em);
                 $return= $result[0]['max(salary)'];   
                 break;
             }
             case 'minsal':
             {
                 $RAW_QUERY = 'SELECT min(salary) FROM salarytable';
-                $statement = $em->getConnection()->prepare($RAW_QUERY);
-                $statement->execute();
-                $result = $statement->fetchAll(); 
+                $result=$this->preparedquery($RAW_QUERY,$em); 
                 $return= $result[0]['min(salary)']; 
                 break;
             }
             case 'avgsal':
             {
                 $RAW_QUERY = 'SELECT avg(salary) FROM salarytable';
-                $statement = $em->getConnection()->prepare($RAW_QUERY);
-                $statement->execute();
-                $result = $statement->fetchAll(); 
+                $result=$this->preparedquery($RAW_QUERY,$em);
                 $return= $result[0]['avg(salary)'];    
                 break;
             }
             case 'highlypaidemp':
             {
                 $RAW_QUERY = 'select name from salarytable where salary=(select max(salary) from salarytable)';
-                $statement = $em->getConnection()->prepare($RAW_QUERY);
-                $statement->execute();
-                $result = $statement->fetchAll(); 
-       //  echo sizeof($result);
-                $return="'";
-                for($i=0;$i<sizeof($result);$i++)
-                {
-                   if($i==0)
-                   {
-                       $return=$return.$result[$i]['name'];
-                   }
-                   else
-                    $return=$return." & ".$result[$i]['name'];
-                    
-                }
-                $return=$return."'";
+                $result=$this->preparedquery($RAW_QUERY,$em);
+                $return=$this->getoutputofnamearray($result);
+                
                 break; 
             }
             case 'leastpaidemp':
             {
                 $RAW_QUERY = 'select name from salarytable where salary=(select min(salary) from salarytable)';
-                $statement = $em->getConnection()->prepare($RAW_QUERY);
-                $statement->execute();
-                $result = $statement->fetchAll(); 
-       //  echo sizeof($result);
-                $return="'";
-                for($i=0;$i<sizeof($result);$i++)
-                {
-                   if($i==0)
-                   {
-                       $return=$return.$result[$i]['name'];
-                   }
-                   else
-                    $return=$return." & ".$result[$i]['name'];
-                }
-                $return=$return."'";
+                $result=$this->preparedquery($RAW_QUERY,$em);
+                $return=$this->getoutputofnamearray($result);
                 break; 
             }
         }
         return new JsonResponse($return);
     }   
+    public function preparedquery($RAW_QUERY,$em)
+    {
+        
+        $statement = $em->getConnection()->prepare($RAW_QUERY);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        return $result;   
+    }
+    public function getoutputofnamearray($result)
+    {
+        $return="'";
+        for($i=0;$i<sizeof($result);$i++)
+        {
+            if($i==0)
+            {
+                $return=$return.$result[$i]['name'];
+            }
+            else
+            $return=$return." & ".$result[$i]['name'];
+            
+        }
+        $return=$return."'";
+        return $return;
+    }
 }
 ?>

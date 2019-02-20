@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+{% block title %} get Details {% endblock %}
+ {% block stylesheets %} 
+ {{parent() }} 
+  <link rel="stylesheet" href="stylesheets/getdetails.css" >
+ {% endblock %}
+{% block body %}
+<div  id="loading" class="col-lg-12 outter"><img class="innner col-lg-12" style="margin:auto 30%"    src="http://i.cubeupload.com/azRFbI.gif"></div>
+
+<div class="col-lg-12">
+ <div class="col-lg-3"></div>
+ <div class="col-lg-6 containerclass">
+ <h2 class="heading">Get Important Details here.</h2>
+ <button class="askbtn" id="maxsal">Max Salary</button><br/>
+ <button class="askbtn" id="minsal">Min Salary</button><br/>
+ <button class="askbtn" id="highlypaidemp">Highly Paid Employee</button><br/>
+ <button class="askbtn" id="leastpaidemp">least Paid Employee</button><br/>
+ <button class="askbtn" id="avgsal">Average salay</button><br>
+ <button onclick="window.location.href='/getdetails'" class="refresh">Reset</button>
+
+ <div>
+ <div class="col-lg-3"></div>
+</div>
+
+{% endblock %}
+ {% block javascripts %}
+    {{ parent() }}
+    <script src="javascripts/getdetails.js"></script>   
+    {% endblock %}

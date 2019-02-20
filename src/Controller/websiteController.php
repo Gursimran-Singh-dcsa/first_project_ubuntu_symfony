@@ -35,17 +35,11 @@ class websiteController extends AbstractController{
             $return="$return error in name";
             return new JsonResponse($return);
         }
-        if(gettype($salary)!='integer'||gettype($salary)!='double')
-       {
-           if($salary>0)
-           {
-               echo "salry must not be string<br>";
-           }
-           echo gettype($salary);
-           echo "salary block";
-        $return="invalid salary type";
-        return new JsonResponse($return);
-       }
+        if($salary<0)
+        {
+            $return="invalid salary type";
+            return new JsonResponse($return);
+        }
         $pf=($salary*12)/100;
         $diff=$pf-(int)($pf);
        
@@ -80,9 +74,100 @@ class websiteController extends AbstractController{
     public function trypanga()
     {
        // print_r($_POST);
-       $request = Request::createFromGlobals();
-       echo $request->query->get("Name");
+        //echo $_SERVER['REQUEST_URI'];
+        $request = Request::createFromGlobals();
+        // echo $request->getPathInfo();
+        // echo $request->request->get('Name');
+        // echo $request->server->get('HTTP_HOST');
+        // echo $request->getMethod();
+       print_r($request->getLanguages());
         return new JsonResponse($_POST);
     } 
+    /**
+     * @Route("/getdetails")
+     */
+    public function getdetails(EntityManagerInterface $em)
+    {
+       return $this->render('webpages\getdetails.html.twig',[]);
+    }
+    /**
+     * @Route("/findout")
+     */
+    public function findout(EntityManagerInterface $em){
+        $data=$_POST['btnid'];
+       
+        switch($data)
+        {
+            case 'maxsal':
+            {
+                $RAW_QUERY = 'SELECT max(salary) FROM salarytable';
+                $statement = $em->getConnection()->prepare($RAW_QUERY);
+                $statement->execute();
+                $result = $statement->fetchAll(); 
+                $return= $result[0]['max(salary)'];   
+                break;
+            }
+            case 'minsal':
+            {
+                $RAW_QUERY = 'SELECT min(salary) FROM salarytable';
+                $statement = $em->getConnection()->prepare($RAW_QUERY);
+                $statement->execute();
+                $result = $statement->fetchAll(); 
+                $return= $result[0]['min(salary)']; 
+                break;
+            }
+            case 'avgsal':
+            {
+                $RAW_QUERY = 'SELECT avg(salary) FROM salarytable';
+                $statement = $em->getConnection()->prepare($RAW_QUERY);
+                $statement->execute();
+                $result = $statement->fetchAll(); 
+                $return= $result[0]['avg(salary)'];    
+                break;
+            }
+            case 'highlypaidemp':
+            {
+                $RAW_QUERY = 'select name from salarytable where salary=(select max(salary) from salarytable)';
+                $statement = $em->getConnection()->prepare($RAW_QUERY);
+                $statement->execute();
+                $result = $statement->fetchAll(); 
+       //  echo sizeof($result);
+                $return="'";
+                for($i=0;$i<sizeof($result);$i++)
+                {
+                   if($i==0)
+                   {
+                       $return=$return.$result[$i]['name'];
+                   }
+                   else
+                    $return=$return." & ".$result[$i]['name'];
+                    
+                }
+                $return=$return."'";
+                break; 
+            }
+            case 'leastpaidemp':
+            {
+                $RAW_QUERY = 'select name from salarytable where salary=(select min(salary) from salarytable)';
+                $statement = $em->getConnection()->prepare($RAW_QUERY);
+                $statement->execute();
+                $result = $statement->fetchAll(); 
+       //  echo sizeof($result);
+                $return="'";
+                for($i=0;$i<sizeof($result);$i++)
+                {
+                   if($i==0)
+                   {
+                       $return=$return.$result[$i]['name'];
+                   }
+                   else
+                    $return=$return." & ".$result[$i]['name'];
+                }
+                $return=$return."'";
+                break; 
+            }
+        }
+        return new JsonResponse($return);
+    }   
 }
 ?>

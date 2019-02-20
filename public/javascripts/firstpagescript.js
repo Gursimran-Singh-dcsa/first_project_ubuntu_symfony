@@ -20,7 +20,7 @@ $(document).ready(function(){
 function yesclick(){
     $(".outer").remove();
     $.ajax({
-        url:"/trypanga",
+        url:"/save",
         dataType:'json',
         method:"POST",
         data:{
@@ -28,8 +28,12 @@ function yesclick(){
             salary:parseInt($("#salary").val())
         },  
         success:function(data){
-        
-          alert(data.Name);
+         console.log(data);
+          alert(data);
+          if(data=="success")
+          {
+              window.location="/getdetails";
+          }
         },
        });
 }
@@ -114,11 +118,9 @@ function nameVal(e)
         console.log("name eror is true");   
         if(!/^[A-Za-z ]+$/.test(name))
         {
-            console.log("NAN");
             $("#name").css("color","red");
             $("#name").css("border","1px solid red");
         }
-        
     }
     else
     {

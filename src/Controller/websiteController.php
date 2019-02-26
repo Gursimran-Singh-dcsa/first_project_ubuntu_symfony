@@ -36,6 +36,11 @@ class websiteController extends AbstractController{
             $return="$return error in name";
             return new JsonResponse($return);
         }
+        if(!is_numeric($salary))
+        {
+            $return="invalid salary type";
+            return new JsonResponse($return);
+        }
         if($salary<0)
         {
             $return="invalid salary type";
@@ -69,10 +74,10 @@ class websiteController extends AbstractController{
         }
         return new JsonResponse($return);
     }
-  /**
-   * @Route("trypanga")
-   */
-    public function trypanga()
+    /**
+     * @Route("trypanga")
+     */
+        public function trypanga()
     {
        // print_r($_POST);
         //echo $_SERVER['REQUEST_URI'];
@@ -161,6 +166,13 @@ class websiteController extends AbstractController{
         }
         $return=$return."'";
         return $return;
+    }
+    /**
+     * @Route("/search-specific-employee")
+     */
+    public function searchspecificemployee()
+    {
+        return $this->render('webpages/searchspecificemployee.html.twig',[]);
     }
 }
 ?>

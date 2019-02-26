@@ -5,7 +5,7 @@ $(document).ready(function(){
     }).ajaxStop(function () {
        $("#loading").hide();
     });
-$('button').click(btnclick)
+$('.fireevent').click(btnclick)
 });
 
 function btnclick()
@@ -28,6 +28,15 @@ function btnclick()
                 break;
                 case 'minsal':
                 text="min salary";
+                break;
+                case 'avgsal':
+                text="average salary";
+                break;
+                case 'highlypaidemp':
+                text ="highly paid employee";
+                break;
+                case 'leastpaidemp':
+                text ="least paid employee";
                 break;
             }
             $("#"+btnid).html(data+" click to update "+text);
